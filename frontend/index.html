@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Roast Battle 🔥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 AI Roast Battle 🔥</h1>
+            <p>Think you can outroast an AI? Bring it on!</p>
+        </div>
+
+        <div class="setup-card" id="setupCard">
+            <div class="input-group">
+                <label for="name">What's your name, challenger? 😏</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="input-group">
+                <label for="level">Choose your roast level:</label>
+                <select id="level">
+                    <option value="kid-friendly">Kid 🍼 (Playful)</option>
+                    <option value="adult">Adult 🍻 (Savage)</option>
+                    <option value="dark humor">Dark ☠️ (Brutal)</option>
+                </select>
+            </div>
+            <button onclick="startBattle()">Start Battle 🔥</button>
+        </div>
+
+        <div class="battle-card" id="battleCard" style="display: none;">
+            <div class="input-group">
+                <label for="comeback">Hit me with your best shot! 🎯</label>
+                <input type="text" id="comeback" placeholder="Type your roast here...">
+            </div>
+            <button onclick="sendRoast()">Send Roast 🔥</button>
+            <div class="loading" id="loading">
+                <span>AI is cooking up a response... 🔥</span>
+            </div>
+            <div class="chat-container" id="chatContainer"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Created with 🔥 by <a href="https://github.com/your-username" target="_blank">BL4Z3</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
