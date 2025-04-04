@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Roast Battle 🔥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --accent-color: #ff4d4d;
+            --secondary-color: #4d4d4d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .setup-card, .battle-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: var(--secondary-color);
+        }
+
+        .rating {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .loading span {
+            animation: pulse 1s infinite;
+        }
+
+        /* Add these footer styles */
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 AI Roast Battle 🔥</h1>
+            <p>Think you can outroast an AI? Bring it on!</p>
+        </div>
+
+        <div class="setup-card" id="setupCard">
+            <div class="input-group">
+                <label for="name">What's your name, challenger? 😏</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="input-group">
+                <label for="level">Choose your roast level:</label>
+                <select id="level">
+                    <option value="kid-friendly">Kid 🍼 (Playful)</option>
+                    <option value="adult">Adult 🍻 (Savage)</option>
+                    <option value="dark humor">Dark ☠️ (Brutal)</option>
+                </select>
+            </div>
+            <button onclick="startBattle()">Start Battle 🔥</button>
+        </div>
+
+        <div class="battle-card" id="battleCard" style="display: none;">
+            <div class="input-group">
+                <label for="comeback">Hit me with your best shot! 🎯</label>
+                <input type="text" id="comeback" placeholder="Type your roast here...">
+            </div>
+            <button onclick="sendRoast()">Send Roast 🔥</button>
+            <div class="loading" id="loading">
+                <span>AI is cooking up a response... 🔥</span>
+            </div>
+            <div class="chat-container" id="chatContainer"></div>
+        </div>
+    </div>
+
+    <!-- Add the footer here -->
+    <div class="footer">
+        <p>Created with 🔥 by <a href="https://github.com/your-username" target="_blank">BL4Z3</a></p>
+    </div>
+
+    <script>
+        let userName = '';
+        let userLevel = '';
+
+        function startBattle() {
+            userName = document.getElementById('name').value.trim();
+            userLevel = document.getElementById('level').value;
+            
+            if (!userName) {
+                alert('Please enter your name first!');
+                return;
+            }
+
+            document.getElementById('setupCard').style.display = 'none';
+            document.getElementById('battleCard').style.display = 'block';
+        }
+
+        async function sendRoast() {
+            const comeback = document.getElementById('comeback').value.trim();
+            if (!comeback) return;
+
+            const loading = document.getElementById('loading');
+            const chatContainer = document.getElementById('chatContainer');
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/roast', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: userName,
+                        comeback: comeback,
+                        level: userLevel
+                    })
+                });
+
+                const data = await response.json();
+                
+                const messageHTML = `
+                    <div class="message">
+                        <p><strong>Your Roast:</strong> ${comeback}</p>
+                        <p class="rating">🎯 ${data.rating}</p>
+                        <p><strong>AI's Comeback:</strong> ${data.roast}</p>
+                    </div>
+                `;
+
+                chatContainer.style.display = 'block';
+                chatContainer.insertAdjacentHTML('afterbegin', messageHTML);
+                document.getElementById('comeback').value = '';
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong! Try again.');
+            }
+
+            loading.style.display = 'none';
+        }
+
+        // Allow sending roast with Enter key
+        document.getElementById('comeback').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendRoast();
+            }
+        });
+    </script>
+</body>
+</html> 
